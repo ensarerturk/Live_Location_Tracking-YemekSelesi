@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/modeller/kullanici.dart';
+import 'package:mobile_project/sayfalar/anasayfa.dart';
+import 'package:mobile_project/servisler/firestorservisi.dart';
 import 'package:mobile_project/servisler/yetkilendirmeservisi.dart';
 
 class HesapOlustur extends StatefulWidget {
@@ -78,7 +81,7 @@ class _HesapOlusturState extends State<HesapOlustur> {
                           if (girilenDeger.isEmpty) {
                             return "Email alanı boş bırakılamaz!";
                             //Girilen değerde @ sembolü yoksa hata ver.
-                          } else if (!girilenDeger.contains("@")) {
+                          } else if (!girilenDeger.contains("@gmail.com")) {
                             return "Girilen değer mail formatında olmalı!";
                           }
                           return null;
@@ -145,9 +148,18 @@ class _HesapOlusturState extends State<HesapOlustur> {
       try {
         //kayıt işlemi bitene kadar beklemek için await
         //yetkilendirme servisi objesi oluşturmak yerine provider ın sağladığı yetkilendirme servisi objesini yazıyoruz.
-        await YetkilendirmeServisi().mailIleKayit(email, sifre);
+        Kullanici kullanici =
+            await YetkilendirmeServisi().mailIleKayit(email, sifre);
+        if (kullanici != null) {
+          FireStoreServisi().kullaniciOlustur(
+              id: kullanici.id,
+              email: kullanici.email,
+              kullaniciAdi: kullaniciAdi);
+        }
         //kayıt bittikten sonra bir önceki sayfaya dönmek için
-        Navigator.pop(context);
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AnaSayfa()));
       } catch (hata) {
         //hata mesajı gösteriminde yükleniyor animasyona gerek kalmadığı için.
         setState(() {

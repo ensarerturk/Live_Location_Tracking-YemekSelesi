@@ -31,6 +31,15 @@ dependencies:
   cloud_firestore:
   firebase_auth:
   firebase_core:
+  firebase_storage:
+  get_it: ^1.0.3+2
+  provider:
+  path_provider:
+  uuid:
+  google_fonts:
+  image_picker: ^0.6.7+21
+ 
+  
 
 dev_dependencies:
   flutter_test:

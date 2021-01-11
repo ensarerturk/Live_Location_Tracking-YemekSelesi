@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_project/kurye/kuryetakip.dart';
 
-import 'package:mobile_project/yonetici/yoneticicrud.dart';
-
-class YoneticiGiris extends StatefulWidget {
+class KuryeGiris extends StatefulWidget {
   @override
-  _YoneticiGirisState createState() => _YoneticiGirisState();
+  _KuryeGirisState createState() => _KuryeGirisState();
 }
 
-class _YoneticiGirisState extends State<YoneticiGiris> {
+class _KuryeGirisState extends State<KuryeGiris> {
   //Formun state ine girebilmek için anahtara ihtiyaç var.
   final _formAnahtari = GlobalKey<FormState>();
   //animasyon için
@@ -24,7 +23,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
     return Scaffold(
         key: _scaffoldAnahtari,
         appBar: AppBar(
-          title: Text("Yonetici Sayfası"),
+          title: Text("Kurye GİRİŞ"),
         ),
         body: Stack(
           children: [
@@ -64,8 +63,8 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
               if (girilenDeger.isEmpty) {
                 return "Email alanı boş bırakılamaz!";
                 //Girilen değerde @ sembolü yoksa hata ver.
-              } else if (!girilenDeger.contains("@yonetici.com")) {
-                return "Girilen değer mail formatında olmalı!";
+              } else if (!girilenDeger.contains("@kurye.com")) {
+                return "Girilen değer mail kurye formatında olmalı!";
               }
               return null;
             },
@@ -137,7 +136,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: sifre);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => YoneticiCrud()));
+            .push(MaterialPageRoute(builder: (context) => KuryeTakip()));
       } catch (hata) {
         setState(() {
           yukleniyor = false;

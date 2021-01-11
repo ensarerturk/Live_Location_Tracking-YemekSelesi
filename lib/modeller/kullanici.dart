@@ -9,12 +9,13 @@ class Kullanici {
   final String email;
   final String hakkinda;
 
-  Kullanici(
-      {@required this.id,
-      this.kullaniciAdi,
-      this.fotoUrl,
-      this.email,
-      this.hakkinda});
+  Kullanici({
+    @required this.id,
+    this.kullaniciAdi,
+    this.fotoUrl,
+    this.email,
+    this.hakkinda,
+  });
 
   factory Kullanici.firebasedenUret(User kullanici) {
     return Kullanici(

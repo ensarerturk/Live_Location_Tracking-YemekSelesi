@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_project/modeller/kullanici.dart';
 
 class YetkilendirmeServisi {
+  String aktifKullaniciId;
   final _firebaseAuth = FirebaseAuth.instance;
 
   Kullanici _kullaniciOlustur(User kullanici) {

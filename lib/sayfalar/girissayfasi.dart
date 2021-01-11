@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_project/kurye/kuryegiris.dart';
+import 'package:mobile_project/sayfalar/anasayfa.dart';
 import 'package:mobile_project/sayfalar/hesapolustur.dart';
-import 'package:mobile_project/servisler/yetkilendirmeservisi.dart';
 import 'package:mobile_project/yonetici/yoneticigiris.dart';
 
 class GirisSayfasi extends StatefulWidget {
@@ -60,7 +62,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               if (girilenDeger.isEmpty) {
                 return "Email alanı boş bırakılamaz!";
                 //Girilen değerde @ sembolü yoksa hata ver.
-              } else if (!girilenDeger.contains("@")) {
+              } else if (!girilenDeger.contains("@gmail.com")) {
                 return "Girilen değer mail formatında olmalı!";
               }
               return null;
@@ -156,7 +158,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
             child: FlatButton(
               onPressed: () {
                 Navigator.of(this.context).push(
-                    MaterialPageRoute(builder: (context) => HesapOlustur()));
+                    MaterialPageRoute(builder: (context) => KuryeGiris()));
               },
               child: Text(
                 "Kurye Giriş",
@@ -198,7 +200,10 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       });
       try {
         //kullanıcının giriş yapmak istediğini güvenlik merkezine söylemek için
-        await YetkilendirmeServisi().mailIleGiris(email, sifre);
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: sifre);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AnaSayfa()));
       } catch (hata) {
         setState(() {
           yukleniyor = false;
