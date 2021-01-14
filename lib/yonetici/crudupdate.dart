@@ -9,20 +9,22 @@ import 'package:intl/intl.dart'; //for date format
 File image;
 String fileName;
 
-class CommonThings {
-  static Size size;
-}
+class YoneticiCrudUpdate extends StatefulWidget {
+  final DocumentSnapshot ds;
 
-class YoneticiCrud extends StatefulWidget {
+  const YoneticiCrudUpdate({Key key, this.ds}) : super(key: key);
+
   @override
-  _YoneticiCrudState createState() => _YoneticiCrudState();
+  _YoneticiCrudUpdateState createState() => _YoneticiCrudUpdateState();
 }
 
-class _YoneticiCrudState extends State<YoneticiCrud> {
+class _YoneticiCrudUpdateState extends State<YoneticiCrudUpdate> {
+  TextEditingController fiyatTextiKumandasi = TextEditingController();
+
   TextEditingController recipeInputController;
   TextEditingController nameInputController;
   TextEditingController imageInputController;
-  TextEditingController fiyatTextiKumandasi = TextEditingController();
+  String productImage;
 
   String id;
   final db = FirebaseFirestore.instance;
@@ -30,9 +32,6 @@ class _YoneticiCrudState extends State<YoneticiCrud> {
   String name;
   String recipe;
   int fiyat;
-  bool shop = false;
-  bool siparis = false;
-  bool kurye = false;
 
   pickerCam() async {
     // ignore: deprecated_member_use
@@ -64,49 +63,36 @@ class _YoneticiCrudState extends State<YoneticiCrud> {
     );
   }
 
-  void createData() async {
-    DateTime now = DateTime.now();
-    String atilmaZaman = DateFormat("kk:mm:ss:MMMMd").format(now);
-    var fullImageName = "atilma-$atilmaZaman" + ".jpg";
-    var fullImageName2 = "atilma-$atilmaZaman" + ".jpg";
+  @override
+  void initState() {
+    super.initState();
 
-    final Reference ref = FirebaseStorage.instance.ref().child(fullImageName);
-    final UploadTask task = ref.putFile(image);
+    recipeInputController =
+        new TextEditingController(text: widget.ds.data()["recipe"]);
+    nameInputController =
+        new TextEditingController(text: widget.ds.data()["name"]);
 
-    var part1 =
-        "https://firebasestorage.googleapis.com/v0/b/mobileproject-dc69b.appspot.com/o/";
+    productImage = widget.ds.data()["image"];
+    print(productImage);
+  }
 
-    var fullPathImage = part1 + fullImageName2;
-    print(fullPathImage);
-
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      DocumentReference ref = await db.collection("yayınlanan").add({
-        "name": "$name",
-        "recipe": "$recipe",
-        "image": "$fullPathImage",
-        "fiyat": fiyat,
-        "shop": shop,
-        "siparis": siparis,
-        "kurye": kurye,
-      });
-      setState(() {
-        // ignore: deprecated_member_use
-        id = ref.documentID;
-      });
-      Navigator.of(context).pop();
-    }
+  Future getPosts() async {
+    var firestore = FirebaseFirestore.instance;
+    // ignore: deprecated_member_use
+    QuerySnapshot qn = await firestore.collection("yayınlanan").getDocuments();
+    // ignore: deprecated_member_use
+    return qn.documents;
   }
 
   @override
   Widget build(BuildContext context) {
-    CommonThings.size = MediaQuery.of(context).size;
+    getPosts();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ekleme Sayfası"),
+        title: Text("Update Sayfası"),
       ),
       body: ListView(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(8),
         children: [
           Form(
             key: _formKey,
@@ -115,8 +101,8 @@ class _YoneticiCrudState extends State<YoneticiCrud> {
                 Row(
                   children: [
                     new Container(
-                      height: 200.0,
-                      width: 200.0,
+                      height: 100.0,
+                      width: 100.0,
                       decoration: new BoxDecoration(
                         border: new Border.all(color: Colors.blueAccent),
                       ),
@@ -125,20 +111,34 @@ class _YoneticiCrudState extends State<YoneticiCrud> {
                           ? Text("Yükleme Yapın")
                           : Image.file(image),
                     ),
-                    Divider(),
-                    new IconButton(
-                      icon: new Icon(Icons.camera_alt),
-                      onPressed: pickerCam,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2.2),
+                      child: new Container(
+                        height: 100.0,
+                        width: 100.0,
+                        decoration: new BoxDecoration(
+                            border: new Border.all(color: Colors.blueAccent)),
+                        padding: new EdgeInsets.all(5.0),
+                        child: productImage == ""
+                            ? Text('Edit')
+                            : Image.network(productImage + '?alt=media',
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace stackTrace) {
+                                return Text('Your error widget...');
+                              }),
+                      ),
                     ),
                     Divider(),
                     new IconButton(
-                      icon: new Icon(Icons.image),
-                      onPressed: pickerGallery,
-                    )
+                        icon: new Icon(Icons.camera_alt), onPressed: pickerCam),
+                    Divider(),
+                    new IconButton(
+                        icon: new Icon(Icons.image), onPressed: pickerGallery),
                   ],
                 ),
                 new Container(
                   child: TextFormField(
+                    controller: nameInputController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Name",
@@ -184,6 +184,7 @@ class _YoneticiCrudState extends State<YoneticiCrud> {
                 ),
                 Container(
                   child: TextFormField(
+                    controller: recipeInputController,
                     maxLines: 7,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -210,15 +211,38 @@ class _YoneticiCrudState extends State<YoneticiCrud> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: <Widget>[
               RaisedButton(
-                onPressed: createData,
-                child: Text(
-                  "Create",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Colors.green,
-              )
+                child: Text('Update'),
+                onPressed: () {
+                  DateTime now = DateTime.now();
+                  String atilmaZaman = DateFormat('kk:mm:ss:MMMMd').format(now);
+                  var fullImageName = 'atilma-$atilmaZaman' + '.jpg';
+                  var fullImageName2 = 'atilma-$atilmaZaman' + '.jpg';
+
+                  final Reference ref =
+                      FirebaseStorage.instance.ref().child(fullImageName);
+                  final UploadTask task = ref.putFile(image);
+                  var part1 =
+                      'https://firebasestorage.googleapis.com/v0/b/apprecetas-cfd25.appspot.com/o/';
+
+                  var fullPathImage = part1 + fullImageName2;
+                  print(fullPathImage);
+                  _formKey.currentState.save();
+                  FirebaseFirestore.instance
+                      .collection('yayınlanan')
+                      // ignore: deprecated_member_use
+                      .document(widget.ds.documentID)
+                      // ignore: deprecated_member_use
+                      .updateData({
+                    'name': nameInputController.text,
+                    'recipe': recipeInputController.text,
+                    'fiyat': fiyat,
+                    'image': '$fullPathImage'
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           )
         ],

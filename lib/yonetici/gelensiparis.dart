@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 
-class SepetimCrud extends StatefulWidget {
+class GelenSiparis extends StatefulWidget {
   @override
-  _SepetimCrudState createState() => _SepetimCrudState();
+  _GelenSiparisState createState() => _GelenSiparisState();
 }
 
-class _SepetimCrudState extends State<SepetimCrud> {
+class _GelenSiparisState extends State<GelenSiparis> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SEPETİM"),
+        title: Text("GELEN SİPARİŞ"),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -23,7 +24,7 @@ class _SepetimCrudState extends State<SepetimCrud> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("yayınlanan")
-            .where("shop", isEqualTo: true)
+            .where("siparis", isEqualTo: true)
             .snapshots(),
         builder:
             // ignore: missing_return
@@ -44,6 +45,8 @@ class _SepetimCrudState extends State<SepetimCrud> {
             itemBuilder: (_, int index) {
               // ignore: deprecated_member_use
               final DocumentSnapshot doc = snapshot.data.documents[index];
+              var gelenSiparis = doc.id;
+
               final map = doc.data();
               return new Container(
                 child: Card(
@@ -72,7 +75,7 @@ class _SepetimCrudState extends State<SepetimCrud> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  doc.data()["recipe"],
+                                  doc.id,
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.red),
                                 ),
@@ -91,31 +94,15 @@ class _SepetimCrudState extends State<SepetimCrud> {
                             child: new Row(
                               children: [
                                 IconButton(
-                                    icon: Icon(
-                                      Icons.shopping_basket,
-                                      color: map["shop"] == true
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ),
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      bool shopping;
-                                      shopping = true;
-                                      if (map["shop"] == true) {
-                                        shopping = false;
-                                      }
-                                      var ref = doc.reference;
-                                      ref.update({"shop": shopping});
-                                    }),
-                                IconButton(
-                                    icon: Icon(Icons.playlist_add_rounded,
+                                    icon: Icon(Icons.wallet_travel,
                                         color: Colors.indigo),
                                     onPressed: () {
                                       showDialog(
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              title: Text("Sipariş alınmıştır"),
+                                              title: Text(
+                                                  " ${gelenSiparis} id numaralı kişiden sipariş alınmıştır"),
                                               content: SingleChildScrollView(
                                                 child: ListBody(
                                                   children: [
@@ -128,6 +115,24 @@ class _SepetimCrudState extends State<SepetimCrud> {
                                                 TextButton(
                                                   child: Text("Hayır"),
                                                   onPressed: () {
+                                                    var ref = doc.reference;
+                                                    bool shopping = false;
+                                                    bool siparis = true;
+
+                                                    if (map["shop"] == false) {
+                                                      shopping = true;
+                                                    }
+                                                    if (map["siparis"] ==
+                                                        false) {
+                                                      siparis = true;
+                                                    }
+
+                                                    ref.update(
+                                                      {
+                                                        "shop": shopping,
+                                                        "siparis": siparis,
+                                                      },
+                                                    );
                                                     Navigator.of(context).pop();
                                                   },
                                                 ),
@@ -135,8 +140,7 @@ class _SepetimCrudState extends State<SepetimCrud> {
                                                   child: Text("EVET"),
                                                   onPressed: () {
                                                     AlertDialog(
-                                                      title: Text(
-                                                          "Sipariş alınmıştır"),
+                                                      title: Text("Sipariş "),
                                                       content:
                                                           SingleChildScrollView(
                                                         child: ListBody(
@@ -147,20 +151,23 @@ class _SepetimCrudState extends State<SepetimCrud> {
                                                         ),
                                                       ),
                                                     );
+
                                                     var ref = doc.reference;
-                                                    bool shopping = true;
-                                                    bool siparis = false;
-                                                    if (map["shop"] == true) {
-                                                      shopping = false;
-                                                    }
+
+                                                    bool siparis = true;
+                                                    bool kurye = false;
+
                                                     if (map["siparis"] ==
-                                                        false) {
-                                                      siparis = true;
+                                                        true) {
+                                                      siparis = false;
+                                                    }
+                                                    if (map["kurye"] == false) {
+                                                      kurye = true;
                                                     }
                                                     ref.update(
                                                       {
-                                                        "shop": shopping,
-                                                        "siparis": siparis
+                                                        "siparis": siparis,
+                                                        "kurye": kurye
                                                       },
                                                     );
                                                     Navigator.of(context).pop();

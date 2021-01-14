@@ -38,6 +38,8 @@ dependencies:
   uuid:
   google_fonts:
   image_picker: ^0.6.7+21
+  date_format: ^1.0.9
+  cached_network_image: ^2.5.0
  
   
 

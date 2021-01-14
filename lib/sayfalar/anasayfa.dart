@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/sayfalar/ak%C4%B1ssayfasi.dart';
 import 'package:mobile_project/sayfalar/girissayfasi.dart';
+
 import 'package:mobile_project/sayfalar/sepetim.dart';
 
 class AnaSayfa extends StatefulWidget {
@@ -31,12 +32,9 @@ class _AnaSayfaState extends State<AnaSayfa> {
       appBar: AppBar(
         title: Text("ANA SAYFA"),
         actions: [
-          FlatButton(
-            child: Text("Çıkış Yap"),
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => GirisSayfasi()));
-            },
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => Navigator.of(context).pop(),
           )
         ],
       ),
@@ -48,12 +46,12 @@ class _AnaSayfaState extends State<AnaSayfa> {
         },
         //controller PageController tipinde biz de sayfa değişimi istiyoruz.
         controller: sayfaKumanda,
-        children: <Widget>[AkisSayfasi(), Sepetim()],
+        children: <Widget>[AkisSayfasi(), SepetimCrud()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _aktifSayfa,
         selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
         items: [
           // ignore: deprecated_member_use
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Akış")),
