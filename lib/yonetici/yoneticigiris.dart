@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:mobile_project/yonetici/yoneticicrud.dart';
+import 'package:mobile_project/yonetici/crudview.dart';
 
 class YoneticiGiris extends StatefulWidget {
   @override
@@ -137,7 +137,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: sifre);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => YoneticiCrud()));
+            .push(MaterialPageRoute(builder: (context) => CrudSayfasi()));
       } catch (hata) {
         setState(() {
           yukleniyor = false;

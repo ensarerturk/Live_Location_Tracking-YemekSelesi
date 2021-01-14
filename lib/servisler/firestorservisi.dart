@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile_project/modeller/kullanici.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreServisi {
@@ -26,5 +27,16 @@ class FireStoreServisi {
       "yayınlayanID": kullaniciID,
       "zaman": zaman
     });
+  }
+
+  gonderileriGetir() async {
+    QuerySnapshot snapshot =
+        // ignore: deprecated_member_use
+        await _firestore.collection("gonderiler").getDocuments();
+
+    List<Kullanici> gonderiler =
+        // ignore: deprecated_member_use
+        snapshot.documents.map((doc) => Kullanici.dokumandanUret(doc)).toList();
+    return gonderiler;
   }
 }

@@ -148,8 +148,8 @@ class _HesapOlusturState extends State<HesapOlustur> {
       try {
         //kayıt işlemi bitene kadar beklemek için await
         //yetkilendirme servisi objesi oluşturmak yerine provider ın sağladığı yetkilendirme servisi objesini yazıyoruz.
-        Kullanici kullanici =
-            await YetkilendirmeServisi().mailIleKayit(email, sifre);
+        Kullanici kullanici = await YetkilendirmeServisi()
+            .mailIleKayit(email, sifre, kullaniciAdi);
         if (kullanici != null) {
           FireStoreServisi().kullaniciOlustur(
               id: kullanici.id,

@@ -17,15 +17,19 @@ class YetkilendirmeServisi {
   //istenilen şartlar sağlandığında AuthResult anahtarını almış olduk ve girisKartımıza atadık.
   //Kayıt olma işlemi gerçekleştiğinde authStateChanges sayesinde kendini dinleyen tüm widgetlar tarafına iletilir.
   //Yani yönlendirme sayfasındaki streamBuilder kullanıcıyı anasayfaya yönlendirir.
-  Future<Kullanici> mailIleKayit(String eposta, String sifre) async {
+  Future<Kullanici> mailIleKayit(
+      String eposta, String sifre, String kullanici) async {
     var girisKarti = await _firebaseAuth.createUserWithEmailAndPassword(
         email: eposta, password: sifre);
     return _kullaniciOlustur(girisKarti.user);
   }
 
-  Future<Kullanici> mailIleGiris(String eposta, String sifre) async {
+  Future<Kullanici> mailIleGiris(
+      String eposta, String sifre, String kullaniciAdi) async {
     var girisKarti = await _firebaseAuth.signInWithEmailAndPassword(
-        email: eposta, password: sifre);
+      email: eposta,
+      password: sifre,
+    );
     return _kullaniciOlustur(girisKarti.user);
   }
 
