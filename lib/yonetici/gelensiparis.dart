@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_project/yonetici/notification.dart';
 
 class GelenSiparis extends StatefulWidget {
   @override
@@ -9,6 +11,35 @@ class GelenSiparis extends StatefulWidget {
 }
 
 class _GelenSiparisState extends State<GelenSiparis> {
+  /*FirebaseMessaging _firebaseMessaging;
+  String _message;
+
+  @override
+  void initState() {
+    _firebaseMessaging.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+      setState(() {
+        _message = message["title"];
+      });
+      print(_message);
+    }, onResume: (Map<String, dynamic> message) async {
+      setState(() {
+        _message = message["title"];
+      });
+      print(_message);
+    }, onMessage: (Map<String, dynamic> message) async {
+      setState(() {
+        _message = message["title"];
+      });
+      print(_message);
+    });
+    super.initState();
+
+    _firebaseMessaging.getToken().then((value) {
+      print(value);
+    });
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,6 +202,11 @@ class _GelenSiparisState extends State<GelenSiparis> {
                                                       },
                                                     );
                                                     Navigator.of(context).pop();
+                                                    /*Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Config()));*/
                                                   },
                                                 )
                                               ],

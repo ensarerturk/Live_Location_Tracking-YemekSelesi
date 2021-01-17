@@ -18,7 +18,10 @@ class YetkilendirmeServisi {
   //Kayıt olma işlemi gerçekleştiğinde authStateChanges sayesinde kendini dinleyen tüm widgetlar tarafına iletilir.
   //Yani yönlendirme sayfasındaki streamBuilder kullanıcıyı anasayfaya yönlendirir.
   Future<Kullanici> mailIleKayit(
-      String eposta, String sifre, String kullanici) async {
+    String eposta,
+    String sifre,
+    String kullanici,
+  ) async {
     var girisKarti = await _firebaseAuth.createUserWithEmailAndPassword(
         email: eposta, password: sifre);
     return _kullaniciOlustur(girisKarti.user);

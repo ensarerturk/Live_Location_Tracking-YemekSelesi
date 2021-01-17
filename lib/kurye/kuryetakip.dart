@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_project/kurye/marker.dart';
 
 class KuryeTakip extends StatefulWidget {
   @override
@@ -15,9 +16,9 @@ class _KuryeTakipState extends State<KuryeTakip> {
         title: Text("KURYE TAKİP"),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => Navigator.of(context).pop(),
-          )
+              icon: Icon(Icons.logout),
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MapPage())))
         ],
       ),
       body: StreamBuilder(
@@ -109,13 +110,22 @@ class _KuryeTakipState extends State<KuryeTakip> {
                                               ),
                                               actions: [
                                                 TextButton(
-                                                  child: Text("Hayır"),
+                                                  child: Text("Yola çık"),
+                                                  onPressed: () => Navigator.of(
+                                                          context)
+                                                      .push(MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              MapPage())),
+                                                ),
+                                                TextButton(
+                                                  child:
+                                                      Text("Teslim Edilmedi"),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
                                                 ),
                                                 FlatButton(
-                                                  child: Text("EVET"),
+                                                  child: Text("Teslim Edildi"),
                                                   onPressed: () {
                                                     AlertDialog(
                                                       title: Text(
@@ -125,7 +135,7 @@ class _KuryeTakipState extends State<KuryeTakip> {
                                                         child: ListBody(
                                                           children: [
                                                             Text(
-                                                                "Siparişinizi onaylıyor musunuz?")
+                                                                "Siparişin durumu ne?")
                                                           ],
                                                         ),
                                                       ),
@@ -152,6 +162,7 @@ class _KuryeTakipState extends State<KuryeTakip> {
                                                         "kurye": kurye
                                                       },
                                                     );
+
                                                     Navigator.of(context).pop();
                                                   },
                                                 )

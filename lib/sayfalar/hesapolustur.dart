@@ -18,6 +18,8 @@ class _HesapOlusturState extends State<HesapOlustur> {
   String kullaniciAdi, email, sifre;
   //hata kodunu snacbar içinde göstermek istiyoruz.Scaffold un olduğu için tanımlıyoruz.
   final _scaffoldAnahtari = GlobalKey<ScaffoldState>();
+
+  String pozisyon;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +29,11 @@ class _HesapOlusturState extends State<HesapOlustur> {
         ),
         body: ListView(
           children: <Widget>[
+            Image.asset(
+              "assets/new_user.png",
+              height: 150,
+              color: Colors.green,
+            ),
             yukleniyor ? LinearProgressIndicator() : SizedBox(),
             SizedBox(height: 20.0),
             Padding(
@@ -36,6 +43,7 @@ class _HesapOlusturState extends State<HesapOlustur> {
                 child: Column(
                   children: [
                     TextFormField(
+
                         //klavyede bizim için tamamlar
                         autocorrect: true,
                         decoration: InputDecoration(
@@ -114,21 +122,44 @@ class _HesapOlusturState extends State<HesapOlustur> {
                       },
                     ),
                     SizedBox(
+                      height: 50,
+                    ),
+                    TextFormField(
+                      //kalvyede yazılanları gizler
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          hintText: "Lütfen kordinatlarınızı giriniz",
+                          labelText: "ltd,lgt:",
+                          errorStyle: TextStyle(fontSize: 16.0),
+                          prefixIcon: Icon(Icons.lock)),
+                      validator: (girilenDeger) {
+                        if (girilenDeger.isEmpty) {
+                          return "Kordinat alanı boş bırakılamaz!";
+                          //4 karakterden az şifre girilirse hata mesajı verilir.
+                        } else if (girilenDeger.trim().length < 4) {
+                          return "Kordinat 4 karakterden az olamaz!";
+                        }
+                        return null;
+                      },
+                      onSaved: (girilenDeger) {
+                        pozisyon = girilenDeger;
+                      },
+                    ),
+                    SizedBox(
                       height: 50.0,
                     ),
                     Container(
                       width: double.infinity,
                       child: FlatButton(
-                        onPressed: _kullaniciOlustur,
-                        child: Text(
-                          "Hesap Oluştur",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        color: Theme.of(this.context).primaryColor,
-                      ),
+                          onPressed: _kullaniciOlustur,
+                          child: Text(
+                            "Hesap Oluştur",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          color: Colors.green),
                     ),
                   ],
                 ),
@@ -152,9 +183,11 @@ class _HesapOlusturState extends State<HesapOlustur> {
             .mailIleKayit(email, sifre, kullaniciAdi);
         if (kullanici != null) {
           FireStoreServisi().kullaniciOlustur(
-              id: kullanici.id,
-              email: kullanici.email,
-              kullaniciAdi: kullaniciAdi);
+            id: kullanici.id,
+            email: kullanici.email,
+            kullaniciAdi: kullaniciAdi,
+            pozisyon: pozisyon,
+          );
         }
         //kayıt bittikten sonra bir önceki sayfaya dönmek için
 

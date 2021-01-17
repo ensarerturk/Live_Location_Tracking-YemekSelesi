@@ -8,12 +8,13 @@ class FireStoreServisi {
 
   final DateTime zaman = DateTime.now();
 
-  Future<void> kullaniciOlustur({id, email, kullaniciAdi}) async {
+  Future<void> kullaniciOlustur({id, email, kullaniciAdi, pozisyon}) async {
     // ignore: deprecated_member_use
     await _firestore.collection("kullanıcılar").document(id).setData({
       "kullaniciAdi": kullaniciAdi,
       "email": email,
-      "olusturulmaZamani": zaman
+      "olusturulmaZamani": zaman,
+      "pozisyon": pozisyon
     });
   }
 

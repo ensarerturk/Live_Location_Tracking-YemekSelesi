@@ -48,8 +48,9 @@ class _KuryeGirisState extends State<KuryeGiris> {
       child: ListView(
         padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 60.0),
         children: <Widget>[
-          FlutterLogo(
-            size: 90.0,
+          Image.asset(
+            "assets/kurye.jpg",
+            height: 150,
           ),
           SizedBox(height: 90.0),
           TextFormField(
@@ -104,16 +105,15 @@ class _KuryeGirisState extends State<KuryeGiris> {
               ),
               Expanded(
                 child: FlatButton(
-                  onPressed: _girisYap,
-                  child: Text(
-                    "Giriş Yap",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  color: Theme.of(this.context).primaryColorDark,
-                ),
+                    onPressed: _girisYap,
+                    child: Text(
+                      "Giriş Yap",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    color: Colors.yellow[800]),
               ),
             ],
           ),

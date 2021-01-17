@@ -47,9 +47,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       child: ListView(
         padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 60.0),
         children: <Widget>[
-          FlutterLogo(
-            size: 90.0,
-          ),
+          Image.asset("assets/user.png", height: 150),
           SizedBox(height: 90.0),
           TextFormField(
             autocorrect: true,
@@ -111,7 +109,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
-                  color: Theme.of(this.context).primaryColor,
+                  color: Colors.orange[300],
                 ),
               ),
               SizedBox(
@@ -127,7 +125,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
-                  color: Theme.of(this.context).primaryColorDark,
+                  color: Colors.orange[300],
                 ),
               ),
             ],
@@ -148,7 +146,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
-              color: Theme.of(this.context).primaryColor,
+              color: Colors.orange[300],
             ),
           ),
           SizedBox(
@@ -167,7 +165,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
-              color: Theme.of(this.context).primaryColor,
+              color: Colors.orange[300],
             ),
           ),
           Center(child: Text("veya")),

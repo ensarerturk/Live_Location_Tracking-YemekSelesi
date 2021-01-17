@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_project/kurye/marker.dart';
+import 'package:mobile_project/sayfalar/takipet.dart';
 
 class SepetimCrud extends StatefulWidget {
   @override
@@ -13,11 +15,19 @@ class _SepetimCrudState extends State<SepetimCrud> {
     return Scaffold(
       appBar: AppBar(
         title: Text("SEPETİM"),
+        backgroundColor: Colors.blue[300],
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => Navigator.of(context).pop(),
-          )
+              icon: Icon(Icons.motorcycle_sharp),
+              onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MusteriTakip()))),
+          /*IconButton(
+            icon: Icon(Icons.access_alarm),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MarkerTakip()));
+            },
+          )*/
         ],
       ),
       body: StreamBuilder(
