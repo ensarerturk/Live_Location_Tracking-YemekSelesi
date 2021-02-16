@@ -1,7 +1,5 @@
 # Live_Location_Tracking-YemekSelesi
 
-# Live_Location_Tracking-YemekSelesi
-
 Mobile food ordering application
 
 You can log into the system in 3 different ways.
